@@ -3,7 +3,47 @@
     <head>
         <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-        
+
+<script>
+  window.onload = function() {
+      AFRAME.registerComponent('videohandler', {
+          init: function () {
+              var marker = this.el;
+
+              this.vid = document.querySelector("#hp");
+
+              marker.addEventListener('markerFound', function () {
+                  this.vid.play();
+              }.bind(this));
+
+  marker.addEventListener('markerLost', function() {
+    this.vid.pause();
+    this.vid.currentTime = 0;
+  }.bind(this));
+          }
+      });
+  };
+</script>
+<script>
+  window.onload = function() {
+      AFRAME.registerComponent('videohandler', {
+          init: function () {
+              var marker = this.el;
+
+              this.vid = document.querySelector("#himym");
+
+              marker.addEventListener('markerFound', function () {
+                  this.vid.play();
+              }.bind(this));
+
+  marker.addEventListener('markerLost', function() {
+    this.vid.pause();
+    this.vid.currentTime = 0;
+  }.bind(this));
+          }
+      });
+  };
+</script>
 
     </head>
     
@@ -33,14 +73,24 @@
         <div class="arjs-loader">
           <div>Loading, please wait...</div>
         </div>
+
+        
+
         <a-scene
           vr-mode-ui="enabled: false;"
           renderer="logarithmicDepthBuffer: true;"
           embedded
           arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
         >
+        <a-assets>
+          <video id="hp" src="HP.mp4" preload="auto" response-type="arraybuffer" loop
+          crossorigin webkit-playsinline autoplay muted playsinline></video>
+          <video id="himym" src="HIMYM.mp4" preload="auto" response-type="arraybuffer" loop
+          crossorigin webkit-playsinline autoplay muted playsinline></video>
+        </a-assets>
+
           <!-- we use cors proxy to avoid cross-origin problems -->
-          <a-nft
+          <a-nft videohandler
             type="nft"
             url="ARDND/track/capturar"
             smooth="true"
@@ -48,12 +98,17 @@
             smoothTolerance=".01"
             smoothThreshold="5"
           >
-            <a-box
-              color="red" scale="100 100 100" position="0 0 0"
+            <a-video 
+            src="#hp"
+            width="150"
+            height="100"
+            position='50 150 -100'
+            rotation='-90 0 0'
+            
             >
-            </a-box>
+            </a-video>
           </a-nft>
-            <a-nft
+            <a-nft videohandler
             type="nft"
             url="ARDND/track/img2"
             smooth="true"
@@ -61,10 +116,14 @@
             smoothTolerance=".01"
             smoothThreshold="5"
           >
-            <a-box
-              color="blue" scale="100 100 100" position="0 0 0"
+            <a-video
+            src="#himym" 
+            width="300"
+            height="200"
+            position='100 -200 -100'
+            rotation='-90 0 0'
             >
-            </a-box>
+            </a-video>
           </a-nft>
           <a-entity camera></a-entity>
         </a-scene>
